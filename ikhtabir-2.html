@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>أختبر نفسي — في الصف</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans:wght@400;600&display=swap">
+<style>
+:root {
+  --bg: #f3f5f8; --surface: #ffffff; --ink: #18202b; --muted: #5d6877; --line: #d9dfe7;
+  --accent: #b24a14; --accent-soft: #f8e5da;
+  --ok: #1f7a4d; --ok-soft: #e3f3ea; --bad: #b3261e; --bad-soft: #fbe7e5;
+  --f-display: "Aref Ruqaa", "Noto Naskh Arabic", serif;
+  --f-body: "Noto Naskh Arabic", "Traditional Arabic", "Times New Roman", serif;
+  --f-latin: "Noto Sans", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #12161c; --surface: #1b2129; --ink: #e9edf2; --muted: #9aa5b3; --line: #2d3540;
+    --accent: #f0a274; --accent-soft: #3d2416;
+    --ok: #5cc28d; --ok-soft: #173327; --bad: #f08a80; --bad-soft: #3a1d1b; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 19px; line-height: 1.7; direction: rtl;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(20px, env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-bottom, 0px));
+}
+.wrap { max-width: 680px; margin: 0 auto; display: grid; gap: 18px; }
+.tr { font-family: var(--f-latin); font-size: 14px; color: var(--muted); direction: ltr; unicode-bidi: isolate; }
+header { text-align: center; display: grid; gap: 0; }
+header .series { font-size: 15px; color: var(--muted); }
+header h1 { font-family: var(--f-display); font-size: clamp(30px, 8vw, 40px); margin: 0; color: var(--accent); line-height: 1.6; }
+header .lesson { font-size: 20px; font-weight: 700; margin: 0; }
+
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.task { background: var(--accent); color: #fff; padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.task b { font-size: 20px; }
+.task .tr { color: rgba(255,255,255,.85); }
+.qs { display: grid; }
+.q { padding: 12px 16px; display: grid; gap: 8px; border-top: 1px solid var(--line); }
+.q:first-child { border-top: 0; }
+.prompt { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 21px; font-weight: 600; }
+.num { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: inherit; }
+.opt { font-size: 19px; padding: 4px 14px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); text-decoration: line-through; }
+.opt .latin, .latin { font-family: var(--f-latin); font-size: 16px; direction: ltr; unicode-bidi: isolate; }
+button:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.slot { min-height: 50px; border: 1.5px dashed var(--line); border-radius: 8px; padding: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.slot.right { border-style: solid; border-color: var(--ok); background: var(--ok-soft); }
+.slot.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-soft); }
+.bank { display: flex; flex-wrap: wrap; gap: 6px; }
+.tile { font-size: 20px; padding: 2px 14px; border-radius: 8px; border: 1.5px solid var(--accent); background: var(--accent-soft); color: var(--ink); cursor: pointer; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { font-size: 17px; font-weight: 700; padding: 6px 18px; border-radius: 8px; border: 0; background: var(--accent); color: #fff; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn:disabled { opacity: .45; cursor: default; }
+.fix { font-size: 16px; color: var(--muted); }
+textarea { font: inherit; font-size: 19px; width: 100%; min-height: 110px; padding: 8px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); }
+.model { padding: 8px 12px; border-radius: 8px; background: var(--accent-soft); }
+.result { background: var(--surface); border: 2px solid var(--accent); border-radius: 10px; padding: 16px; text-align: center; display: grid; gap: 6px; justify-items: center; }
+.result .big { font-size: 44px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1.3; direction: ltr; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="series">مِفْتاحُ العَرَبِيَّةِ · الكِتابُ التَّمْهيدِيُّ</span>
+    <h1>أَخْتَبِرُ نَفْسي</h1>
+    <p class="lesson">الدَّرْسُ الثّاني: فِي الصَّفِّ</p>
+    <span class="tr">İkinci Ders: Sınıfta</span>
+  </header>
+  <div id="quiz" class="wrap"></div>
+  <div class="result" id="result">
+    <span id="resText">أُجيبُ عَنِ الأَسْئِلَةِ، ثُمَّ أَرى نَتيجَتي هُنا.</span>
+    <span class="big" id="score"></span>
+    <span class="tr" id="resTr">Soruları cevapla, sonucunu burada gör.</span>
+    <div class="row"><button class="btn" id="again" type="button">أُعيدُ الاخْتِبارَ <span class="tr" style="color:inherit">Tekrar</span></button></div>
+  </div>
+</div>
+<script>
+const DATA = [{"ins": "اخْتَرِ الكَلِمَةَ الصَّحيحَةَ", "tr": "Doğru kelimeyi seç", "type": "mcq", "items": [{"p": "silgi", "opts": ["مِمْحاةٌ", "مِسْطَرَةٌ", "مِبْراةٌ", "حَقيبَةٌ"], "h": "", "fix": ""}, {"p": "cetvel", "opts": ["مِسْطَرَةٌ", "مِمْحاةٌ", "دَفْتَرٌ", "قَلَمٌ"], "h": "", "fix": ""}, {"p": "çanta", "opts": ["حَقيبَةٌ", "طاوِلَةٌ", "سَبّورَةٌ", "ساعَةٌ"], "h": "", "fix": ""}, {"p": "yazı tahtası", "opts": ["سَبّورَةٌ", "نافِذَةٌ", "وَرَقَةٌ", "كُرْسِيٌّ"], "h": "", "fix": ""}, {"p": "pencere", "opts": ["نافِذَةٌ", "بابٌ", "مِفْتاحٌ", "مَقْعَدٌ"], "h": "", "fix": ""}]}, {"ins": "اخْتَرِ الفِعْلَ الصَّحيحَ", "tr": "Doğru fiili seç", "type": "mcq", "items": [{"p": "أَحْمَدُ، ……", "opts": ["قِفْ", "قِفي", "اِجْلِسي", "اُكْتُبي"], "h": "Ahmet, ayağa kalk!", "fix": ""}, {"p": "فاطِمَةُ، ……", "opts": ["اِجْلِسي", "اِجْلِسْ", "قِفْ", "اُكْتُبْ"], "h": "Fatma, otur!", "fix": ""}, {"p": "يوسُفُ، …… الكِتابَ.", "opts": ["اِفْتَحِ", "أَغْلِقي", "اِفْتَحي", "اُكْتُبْ"], "h": "Yusuf, kitabı aç!", "fix": ""}, {"p": "زَيْنَبُ، ……", "opts": ["اِسْتَمِعي", "اِسْتَمِعْ", "تَحَدَّثْ", "اُنْظُرْ"], "h": "Zeynep, dinle!", "fix": ""}]}, {"ins": "اخْتَرِ الكَلِمَةَ المُناسِبَةَ لِلفَراغِ", "tr": "Boşluğa uygun kelimeyi seç", "type": "mcq", "items": [{"p": "…… سَبّورَةٌ.", "opts": ["هذِهِ", "هذا", "مَنْ", "ما"], "h": "", "fix": ""}, {"p": "…… قَلَمٌ.", "opts": ["هذا", "هذِهِ", "مَنْ", "ما"], "h": "", "fix": ""}, {"p": "…… هذا؟ — هذا أُسْتاذٌ.", "opts": ["مَنْ", "ما", "هذِهِ", "أَيْنَ"], "h": "", "fix": ""}, {"p": "…… هذِهِ؟ — هذِهِ حَقيبَةٌ.", "opts": ["ما", "مَنْ", "هذا", "أَيْنَ"], "h": "", "fix": ""}]}, {"ins": "اخْتَرِ العَدَدَ الصَّحيحَ", "tr": "Doğru sayıyı seç", "type": "mcq", "items": [{"p": "٧", "opts": ["سَبْعَةٌ", "سِتَّةٌ", "تِسْعَةٌ", "ثَمانِيَةٌ"], "h": "", "fix": ""}, {"p": "ثَلاثَةٌ + خَمْسَةٌ = ……", "opts": ["ثَمانِيَةٌ", "سَبْعَةٌ", "سِتَّةٌ", "عَشَرَةٌ"], "h": "", "fix": ""}, {"p": "في الحَقيبَةِ خَمْسَةُ ……", "opts": ["كُتُبٍ", "كِتابٌ", "كِتابًا", "الكُتُبُ"], "h": "", "fix": ""}, {"p": "في الصَّفِّ …… طالِباتٍ. (٣)", "opts": ["ثَلاثُ", "ثَلاثَةُ", "ثَلاثٌ", "ثَلاثَةٌ"], "h": "", "fix": ""}]}, {"ins": "اخْتَرِ الكَلِمَةَ الَّتي فيها الحَرْفُ", "tr": "Bu harfin bulunduğu kelimeyi seç", "type": "mcq", "items": [{"p": "ذ", "opts": ["ذَهَبٌ", "زَهْرَةٌ", "ثَلْجٌ", "ظَهْرٌ"], "h": "", "fix": ""}, {"p": "ظ", "opts": ["ظَهْرٌ", "ذُرَةٌ", "ثَوْبٌ", "زَيْتٌ"], "h": "", "fix": ""}, {"p": "ث", "opts": ["ثَلْجٌ", "سَبّورَةٌ", "ذَهَبٌ", "تَمْرٌ"], "h": "", "fix": ""}]}, {"ins": "صَحيحٌ أَمْ خَطَأٌ؟", "tr": "Doğru mu, yanlış mı?", "type": "mcq", "items": [{"p": "هذا كِتابٌ.", "opts": ["صَحيحٌ", "خَطَأٌ"], "h": "", "fix": ""}, {"p": "قالَتْ فاطِمَةُ لِأَحْمَدَ: اِجْلِسي.", "opts": ["خَطَأٌ", "صَحيحٌ"], "h": "", "fix": "الصَّوابُ: اِجْلِسْ."}, {"p": "في الصَّفِّ ثَلاثَةُ طالِباتٍ.", "opts": ["خَطَأٌ", "صَحيحٌ"], "h": "", "fix": "الصَّوابُ: ثَلاثُ طالِباتٍ."}]}, {"ins": "اكْتُبْ", "tr": "Yaz", "type": "write", "items": [{"p": "اكْتُبْ ثَلاثَ جُمَلٍ عَنْ صَفِّكَ.", "model": "هذا كِتابٌ. هذِهِ سَبّورَةٌ. في الصَّفِّ عَشَرَةُ طُلّابٍ.", "h": "Sınıfın hakkında üç cümle yaz."}]}];
+const AR = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const isLatin = s => /^[\x00-ɏ’“”…!?.,\s]+$/.test(s);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const txt = s => isLatin(s) ? `<span class="latin">${esc(s)}</span>` : esc(s);
+
+let scored, answered, right;
+function build() {
+  const root = document.getElementById('quiz');
+  root.innerHTML = ''; scored = 0; answered = 0; right = 0;
+  let n = 0;
+  DATA.forEach((g, gi) => {
+    const first = n + 1;
+    const qs = g.items.map((it, ii) => { n++; return { it, n, id: `g${gi}q${ii}` }; });
+    const range = qs.length > 1 ? `${AR(first)}–${AR(n)}` : AR(first);
+    const sec = document.createElement('section');
+    sec.innerHTML = `<div class="task"><b>${range}. ${esc(g.ins)}</b><span class="tr">${esc(g.tr)}</span></div><div class="qs"></div>`;
+    const box = sec.querySelector('.qs');
+    qs.forEach(({ it, n, id }) => {
+      const d = document.createElement('div'); d.className = 'q';
+      const pr = `<div class="prompt"><span class="num">${AR(n)}.</span>${it.p ? `<span>${txt(it.p)}</span>` : ''}${it.h ? `<span class="tr">${esc(it.h)}</span>` : ''}</div>`;
+      if (g.type === 'mcq') { scored++; d.innerHTML = pr + `<div class="opts"></div><div class="fix" hidden></div>`; mcq(d, it, id); }
+      else if (g.type === 'order') { scored++; d.innerHTML = pr; order(d, it, id); }
+      else { d.innerHTML = pr; write(d, it, id); }
+      box.appendChild(d);
+    });
+    root.appendChild(sec);
+  });
+  update();
+}
+function mcq(d, it, id) {
+  const opts = shuffle(it.opts.map((o, i) => ({ o, ok: i === 0 })));
+  const wrap = d.querySelector('.opts');
+  opts.forEach((x, k) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.id = `${id}o${k}`; b.innerHTML = txt(x.o);
+    b.addEventListener('click', () => {
+      wrap.querySelectorAll('.opt').forEach((y, j) => { y.disabled = true; if (opts[j].ok) y.classList.add('right'); });
+      if (!x.ok) { b.classList.add('wrong'); if (it.fix) { const f = d.querySelector('.fix'); f.textContent = it.fix; f.hidden = false; } }
+      answered++; if (x.ok) right++; update();
+    });
+    wrap.appendChild(b);
+  });
+}
+function order(d, it, id) {
+  const bank = shuffle(it.words.map((w, i) => ({ w, i })));
+  let picked = [];
+  d.insertAdjacentHTML('beforeend', `<div class="slot"></div><div class="bank"></div><div class="row"><button type="button" class="btn" id="${id}c" disabled>تَحَقَّقْ</button><button type="button" class="btn ghost" id="${id}x">امْسَحْ</button></div><div class="fix" hidden></div>`);
+  const slot = d.querySelector('.slot'), bk = d.querySelector('.bank'), chk = d.querySelector(`#${id}c`), clr = d.querySelector(`#${id}x`);
+  let done = false;
+  const draw = () => {
+    slot.innerHTML = ''; bk.innerHTML = '';
+    picked.forEach((p, k) => { const t = document.createElement('button'); t.type = 'button'; t.className = 'tile'; t.textContent = p.w; t.disabled = done; t.onclick = () => { picked.splice(k, 1); draw(); }; slot.appendChild(t); });
+    bank.filter(b => !picked.includes(b)).forEach(b => { const t = document.createElement('button'); t.type = 'button'; t.className = 'tile'; t.textContent = b.w; t.onclick = () => { picked.push(b); draw(); }; bk.appendChild(t); });
+    chk.disabled = done || picked.length !== it.words.length;
+  };
+  draw();
+  clr.onclick = () => { picked = []; draw(); };
+  chk.onclick = () => {
+    done = true; const ok = picked.map(p => p.w).join(' ') === it.words.join(' ');
+    slot.classList.add(ok ? 'right' : 'wrong'); clr.disabled = true; draw();
+    if (!ok) { const f = d.querySelector('.fix'); f.textContent = 'الصَّوابُ: ' + it.words.join(' '); f.hidden = false; }
+    answered++; if (ok) right++; update();
+  };
+}
+function write(d, it, id) {
+  d.insertAdjacentHTML('beforeend', `<textarea id="${id}t" aria-label="إجابتي"></textarea><div class="row"><button type="button" class="btn ghost" id="${id}m">أَعْرِضُ نَموذَجًا <span class="tr" style="color:inherit">Örnek</span></button></div><div class="model" hidden>${esc(it.model)}</div>`);
+  d.querySelector(`#${id}m`).onclick = e => { e.currentTarget.disabled = true; d.querySelector('.model').hidden = false; };
+}
+function update() {
+  const s = document.getElementById('score'), t = document.getElementById('resText'), r = document.getElementById('resTr');
+  if (answered < scored) {
+    s.textContent = answered ? `${right} / ${answered}` : '';
+    t.textContent = `أَجَبْتُ عَنْ ${AR(answered)} مِنْ ${AR(scored)} سُؤالًا.`;
+    r.textContent = `${answered} / ${scored} soru cevaplandı.`;
+    return;
+  }
+  const pct = right / scored;
+  s.textContent = `${right} / ${scored}`;
+  t.textContent = pct >= 0.85 ? 'مُمْتازٌ! أَتْقَنْتُ الدَّرْسَ.' : pct >= 0.6 ? 'جَيِّدٌ، أُراجِعُ أَخْطائي.' : 'أُراجِعُ الدَّرْسَ في المُلْزَمَةِ ثُمَّ أُعيدُ الاخْتِبارَ.';
+  r.textContent = pct >= 0.85 ? 'Harika! Dersi öğrendim.' : pct >= 0.6 ? 'İyi, yanlışlarımı tekrar ediyorum.' : 'Dersi föyden tekrar edip testi yeniden çözüyorum.';
+}
+document.getElementById('again').onclick = () => { build(); window.scrollTo({ top: 0 }); };
+build();
+</script>
+</body>
+</html>
